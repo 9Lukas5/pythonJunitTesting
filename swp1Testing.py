@@ -71,6 +71,11 @@ def buildSources(testDir, solDir):
     try:
         stdout, other = p.communicate(timeout=30)
         stdout = stdout.decode('utf-8')
+
+        for c in testClasses.strip().split(' '):
+            if (("Result for testing class" + c) not in stdout):
+                stdout += 'Result for testing class ' + c + '\n Points 0\n'
+
     except TimeoutExpired:
         print('timed-out, kill...')
         os.killpg(os.getpgid(p.pid), signal.SIGTERM)
