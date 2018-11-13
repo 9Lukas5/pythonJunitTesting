@@ -19,11 +19,13 @@ class Student(object):
     def __init__(self):
         self.name = ""
         self.vcs = ""
+        self.alias = ""
 
     def toString(self):
         toReturn = ''
         toReturn += 'name:\t' + self.name + '\n'
-        toReturn += 'vcs:\t' + self.vcs
+        toReturn += 'vcs:\t' + self.vcs + '\n'
+        toReturn += 'alias:\t' + self.alias
         return toReturn
 
 class TestErgebnis(object):
@@ -164,6 +166,9 @@ if (args['kind'] == 'single'):
     elif ('vcs' in args):
         s.vcs = args['vcs']
 
+    if ("alias" in args):
+        s.alias = args["alias"]
+
     s.name = args['student']
 
     studenten.append(s)
@@ -178,7 +183,7 @@ elif (args['kind'] == 'all'):
             if (line != '\n' and not line.startswith('#')):
                 line = line.replace('\n', '')
                 student = Student()
-                student.name, student.vcs = line.split('\t')
+                student.name, student.vcs, student.alias = line.split('\t')
                 studenten.append(student)
     f.close()
 
@@ -215,7 +220,7 @@ elif (mode == 'test'):
             for line in lines:
                 if 'Points' in line:
                     reachedPoints = line.replace('Points', '').strip()
-                    results[testName].points[s.name] = reachedPoints
+                    results[testName].points[s] = reachedPoints
 
     rmtree(args['task'])
 
@@ -229,11 +234,17 @@ elif (mode == 'test'):
         fPath = os.path.join(resultsPath, 'Points_' + args['task'] + '_' + r + '.txt')
         with open(fPath, 'w') as f:
             for st in results[r].points:
-                f.write(st + '\t' + results[r].points[st] + '\n')
+                if ("useAlias" in args and args["useAlias"] == "True"):
+                    f.write(st.alias + '\t' + results[r].points[st] + '\n')
+                else:
+                    f.write(st.name + '\t' + results[r].points[st] + '\n')
         f.close()
         print (results[r].name)
         for st in results[r].points:
-            print(st + '\t' + results[r].points[st])
+            if("useAlias" in args and args["useAlias"] == "True"):
+                print(st.alias + '\t' + results[r].points[st])
+            else:
+                print(st.name + '\t' + results[r].points[st])
 
 else:
     raise Exception("no valid mode given!")
