@@ -3,20 +3,17 @@ import os
 import signal
 from subprocess import Popen, PIPE, TimeoutExpired
 from shutil import copytree, rmtree
+import environmentVariables
 
 #=================================#
 #            global vars          #
 #=================================#
-
-server      = "193.196.141.209"
-user        = "62wilu1bif"
-repoRoot    = "/var/svn/swp1/"
-JAVA8_HOME  = '/usr/lib/jvm/java-8-openjdk-amd64'
-JUNIT_HOME  = '/usr/share/java' # Change this to where junit jar-files are installed
-CLASSPATH   = JUNIT_HOME + '/junit4.jar'\
-                + ':' + JUNIT_HOME + '/hamcrest-core.jar'\
-                + ':../../Scratch/Helpers/*'\
-                + ':../../Scratch/Libraries/*'
+server      = environmentVariables.server
+user        = environmentVariables.user
+repoRoot    = environmentVariables.repoRoot
+JAVA8_HOME  = environmentVariables.JAVA8_HOME
+JUNIT_HOME  = environmentVariables.JUNIT_HOME
+CLASSPATH   = environmentVariables.CLASSPATH
 
 class Student(object):
     def __init__(self):
