@@ -67,6 +67,7 @@ def buildSources(testDir, solDir):
                 sourceFiles += ' ' + os.path.join(root, f)
 
     Popen(JAVA8_HOME + '/bin/javac -cp ' + localCP + sourceFiles, shell=True, cwd=testDir).wait()
+
     p = Popen(JAVA8_HOME + '/bin/java -cp ' + localCP + ' org.junit.runner.JUnitCore ' + testClasses, shell=True, cwd=testDir, stdout=PIPE, preexec_fn=os.setsid)
     try:
         stdout, other = p.communicate(timeout=30)
@@ -77,16 +78,17 @@ def buildSources(testDir, solDir):
             f.write(stdout)
         f.close()
 
-        for c in testClasses.strip().split(' '):
-            if (("Result for testing class" + c) not in stdout):
-                stdout += 'Result for testing class ' + c + '\n Points 0\n'
-
     except TimeoutExpired:
         print('timed-out, kill...')
         os.killpg(os.getpgid(p.pid), signal.SIGTERM)
         stdout = 'bla\n'# Result for testing class something.' + f.replace('.java', 'Test') + '\n Points 0'
         for c in testClasses.strip().split(' '):
             stdout += 'Result for testing class ' + c + '\n Points 0\n'
+
+    for c in testClasses.strip().split(' '):
+        if (("Result for testing class " + c) not in stdout):
+            stdout = 'Result for testing class ' + c + '\n Points 0\n' + stdout
+    stdout = "<empty line>" + stdout
 
     return stdout.split('Result for testing class')[1:classCount+1]
 
