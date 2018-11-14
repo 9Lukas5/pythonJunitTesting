@@ -72,6 +72,11 @@ def buildSources(testDir, solDir):
         stdout, other = p.communicate(timeout=30)
         stdout = stdout.decode('utf-8')
 
+        logPath = os.path.join(solDir, "..", "JUnitlog.txt")
+        with open(logPath, 'w') as f:
+            f.write(stdout)
+        f.close()
+
         for c in testClasses.strip().split(' '):
             if (("Result for testing class" + c) not in stdout):
                 stdout += 'Result for testing class ' + c + '\n Points 0\n'
