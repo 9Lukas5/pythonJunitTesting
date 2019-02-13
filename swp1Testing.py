@@ -140,6 +140,9 @@ def download(student, task):
 def printHelp():
     print('python3 swp1Testing.py [download|test] kind=[single|all]'
     + ' task=<name of task to be tested> test=<name of test>')
+    print()
+    print('\t useAlias=True\t-\t use the alias given for the results file')
+    print()
     print('for kind=single:')
     print('\t student=<username of student>')
     print('\t vcs=[svn|git] version control system the student uses')
