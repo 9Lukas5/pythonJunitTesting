@@ -138,8 +138,14 @@ def download(student, task):
     Popen([vcs, command, repoURL, os.path.join(targetPath, task)]).wait()
 
 def printHelp():
-    print('TODO: print help')
-
+    print('python3 swp1Testing.py [download|test] kind=[single|all]'
+    + ' task=<name of task to be tested> test=<name of test>')
+    print('for kind=single:')
+    print('\t student=<username of student>')
+    print('\t vcs=[svn|git] version control system the student uses')
+    print()
+    print('for kind=all:')
+    print('\t studenten=<file of students>')
 
 #=================================#
 #            main method          #
